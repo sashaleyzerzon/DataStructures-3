@@ -8,17 +8,12 @@
 # Copyright:   (c) Alexandra Leyzerzon 2020
 # Licence:     <your licence>
 #-------------------------------------------------------------------------------
-class CoordinateNode:
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-        self.right = None
-        self.left = None
-        #self.p = None
-
 class Node:
-    def __init__(self,key):
+    def __init__(self,key, y):
         self.key = key
+        self.y = y
+        # -1 is one more on the left, 1 is one more on the right
+        self.weight = 0
         self.right = None
         self.left = None
         self.parent = None
@@ -26,7 +21,6 @@ class Node:
 class BST:
     def __init__(self):
         self.root = None
-
     def Insert(tree,node):
         y = None
         x = tree.root
@@ -46,7 +40,21 @@ class BST:
                 y.right = node
 
 
+class AVL:
+    def __init__(self):
+        self.root = None
 
+    def insert(self, n):
+        if not self.root:
+            self.root = n
+        else:
+            pass
+
+    def balance(self):
+        pass
+
+    def updateWeights(self):
+        pass
 
 
 
