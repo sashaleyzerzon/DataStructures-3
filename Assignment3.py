@@ -57,6 +57,8 @@ class AVL:
         pass
 
 
+def printPoints(tree):
+    pass
 
 def main():
     pass
