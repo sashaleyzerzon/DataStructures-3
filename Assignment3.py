@@ -15,6 +15,8 @@ class Node:
         self.left = None
         self.parent = None
         self.line = False
+        # TODO: check if needed to avoid deep recursion
+        # self.height
 
     def addChild(self, n):
         if n.key < self.key:
@@ -31,17 +33,17 @@ class Node:
 
     def youngParent(self):
         if self.weight == 0 and self.parent:
-            return self.parent.youngParent
+            return self.parent.youngParent()
         else:
             return self
 
     def heightAndWeight(self):
         if self.left:
-            left_side = self.left.heightAndWeight
+            left_side = self.left.heightAndWeight()
         else:
             left_side = 0
         if self.right:
-            right_side = self.right.heightAndWeight
+            right_side = self.right.heightAndWeight()
         else:
             right_side = 0
 
@@ -49,36 +51,15 @@ class Node:
         return max(left_side, right_side) + 1
 
     def draw(self, mat):
-        mat[self.y, self.key] = 1
-        self.left.draw()
-        self.right.draw()
+        mat[self.key, self.y] = 1
+        if self.left:
+            self.left.draw(mat)
+        if self.right:
+            self.right.draw(mat)
 
     def drawLine(self, mat):
-        for cell in CO_RANGE:
-            mat[self.key, cell] = 2
-
-
-class BST:
-    def __init__(self):
-        self.root = None
-
-    def Insert(tree, node):
-        y = None
-        x = tree.root
-        while x is not None:
-            y = x
-            if node.key < x.key:
-                x = x.left
-            else:
-                x = x.right
-        node.parent = y
-        if y in None:
-            tree.root = node
-        else:
-            if node.key < y.key:
-                y.left = node
-            else:
-                y.right = node
+        for cell in range(CO_RANGE):
+            mat[cell, self.key] = 2
 
 
 class AVL:
@@ -93,8 +74,9 @@ class AVL:
             self.balance(yp_node)
             yp_node.heightAndWeight()
         else:
+            pass
             # is needed?????? I don't think so but checking is needed
-            self.root.heightAndWeight()
+            # self.root.heightAndWeight()
 
     def insert(self, new_node):
         if not self.root:
@@ -106,26 +88,29 @@ class AVL:
         pass
 
     def draw(self, mat):
+        # TODO: check if needed:
         # recursion limit in python is 300, so dividing by 4
+        # if self.root:
+        #     mat[self.root.y, self.root.key] = 1
+        #     if self.root.left:
+        #         mat[self.root.left.y, self.root.left.key] = 1
+        #         if self.root.left.left:
+        #             self.root.left.left.draw()
+        #         if self.root.left.right:
+        #             self.root.left.right.draw()
+        #     if self.root.right:
+        #         mat[self.root.right.y, self.root.right.key] = 1
+        #         if self.root.right.left:
+        #             self.root.right.left.draw()
+        #         if self.root.right.right:
+        #             self.root.right.right.draw()
         if self.root:
-            mat[self.root.y, self.root.key] = 1
-            if self.root.left:
-                mat[self.root.left.y, self.root.left.key] = 1
-                if self.root.left.left:
-                    self.root.left.left.draw
-                if self.root.left.right:
-                    self.root.left.right.draw
-            if self.root.right:
-                mat[self.root.right.y, self.root.right.key] = 1
-                if self.root.right.left:
-                    self.root.right.left.draw
-                if self.root.right.right:
-                    self.root.right.right.draw
+            self.root.draw(mat)
 
 
 def Printer(mat):
     for line in mat:
-        for cell in line
+        for cell in line:
             if cell == 0:
                 print(" ", end=' ')
             if cell == 1:
@@ -137,26 +122,36 @@ def Printer(mat):
         print("")
 
 
-def BuildTree()
+def BuildTree():
     T = AVL()
-    for n in NUMBER_OF_POINTS:
-        n = Node(randrange(0, 101, 1), randrange(0, 101, 1))
+    for n in range(NUMBER_OF_POINTS):
+        n = Node(randrange(0, CO_RANGE + 1, 1), randrange(0, CO_RANGE + 1, 1))
         T.addChild(n)
     return T
 
 
 def NearestRightPoint(T, x0):
-    pass
+    return None
 
 
 def main():
-    mat = np.zeros((CO_RANGE, CO_RANGE))
+    mat = np.zeros((CO_RANGE + 1, CO_RANGE + 1))
     T = BuildTree()
     T.draw(mat)
-    Printer(T)
-    x0 = input("Where would you like to place the vertical line?")
-    point = NearestRightPoint(T, x0)
-    mat[point.y, point.key] == 3
+    Printer(mat)
+    x0 = int(input("Where would you like to place the vertical line?"))
+    # TODO: needs to be implemented inside the method NearestRightPoint
+    # start
+    the_line = Node(x0, 1)
+    the_line.line = True
+    T.addChild(the_line)
+    the_line.drawLine(mat)
+    Printer(mat)
+    # end
+
+    # TODO: uncomment after implementation
+    # point = NearestRightPoint(T, x0)
+    # mat[point.y, point.key] == 3
 
 
 if __name__ == '__main__':
