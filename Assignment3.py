@@ -1,6 +1,9 @@
 import numpy as np
+from Lib.random import randrange
+
 NUMBER_OF_POINTS = 10
 CO_RANGE = 10
+
 
 class Node:
     def __init__(self, key, y):
@@ -112,7 +115,7 @@ class AVL:
                     self.root.right.right.draw
 
 
-def printPoints(tree):
+def PrintPoints(tree):
     mat = np.zeros((CO_RANGE, CO_RANGE))
     tree.draw(mat)
     for cell in mat:
@@ -126,10 +129,22 @@ def printPoints(tree):
             print("X", end='')
 
 
+def BuildTree()
+    T = AVL()
+    for n in NUMBER_OF_POINTS:
+        n = Node(randrange(0, 101, 1), randrange(0, 101, 1))
+        T.addChild(n)
+    return T
 
+def NearestRightPoint(T, x0):
+    pass
 
 def main():
-    print("Where would you like to place the vertical line?")
+    T = BuildTree()
+    PrintPoints(T)
+    x0 = input("Where would you like to place the vertical line?")
+    point = NearestRightPoint(T, x0)
+
 
 
 if __name__ == '__main__':
