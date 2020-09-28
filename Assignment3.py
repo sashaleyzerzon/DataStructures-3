@@ -49,13 +49,14 @@ class Node:
         return max(left_side, right_side) + 1
 
     def draw(self, mat):
-        mat[self.key, self.y] = 1
+        mat[self.y, self.key] = 1
         self.left.draw()
         self.right.draw()
 
-    def drawLine(self, mat)
+    def drawLine(self, mat):
         for cell in CO_RANGE:
             mat[self.key, cell] = 2
+
 
 class BST:
     def __init__(self):
@@ -107,32 +108,33 @@ class AVL:
     def draw(self, mat):
         # recursion limit in python is 300, so dividing by 4
         if self.root:
-            mat[self.root.key, self.root.y] = 1
+            mat[self.root.y, self.root.key] = 1
             if self.root.left:
-                mat[self.root.left.key, self.root.left.y] = 1
+                mat[self.root.left.y, self.root.left.key] = 1
                 if self.root.left.left:
                     self.root.left.left.draw
                 if self.root.left.right:
                     self.root.left.right.draw
             if self.root.right:
-                mat[self.root.right.key, self.root.right.y] = 1
+                mat[self.root.right.y, self.root.right.key] = 1
                 if self.root.right.left:
                     self.root.right.left.draw
                 if self.root.right.right:
                     self.root.right.right.draw
 
 
-
-def PrintPoints(tree):
-
-    for cell in mat:
-        if cell == 0:
-            print(" ", end='')
-        if cell == 1:
-            print("O", end='')
-        if cell == 2:
-            print("|", end='')
-
+def Printer(mat):
+    for line in mat:
+        for cell in line
+            if cell == 0:
+                print(" ", end=' ')
+            if cell == 1:
+                print("O", end=' ')
+            if cell == 2:
+                print("|", end=' ')
+            if cell == 3:
+                print("X", end=' ')
+        print("")
 
 
 def BuildTree()
@@ -142,17 +144,19 @@ def BuildTree()
         T.addChild(n)
     return T
 
+
 def NearestRightPoint(T, x0):
     pass
+
 
 def main():
     mat = np.zeros((CO_RANGE, CO_RANGE))
     T = BuildTree()
     T.draw(mat)
-    PrintPoints(T)
+    Printer(T)
     x0 = input("Where would you like to place the vertical line?")
     point = NearestRightPoint(T, x0)
-
+    mat[point.y, point.key] == 3
 
 
 if __name__ == '__main__':
