@@ -1,3 +1,7 @@
+import numpy as np
+NUMBER_OF_POINTS = 10
+CO_RANGE = 10
+
 class Node:
     def __init__(self, key, y):
         self.key = key
@@ -40,6 +44,11 @@ class Node:
         self.weight = right_side - left_side
         return max(left_side, right_side) + 1
 
+    def draw(self, mat):
+        mat[self.key, self.y] = 1
+        self.left.draw()
+        self.right.draw()
+
 
 class BST:
     def __init__(self):
@@ -76,7 +85,7 @@ class AVL:
             self.balance(yp_node)
             yp_node.heightAndWeight()
         else:
-            # is needed??????
+            # is needed?????? I don't think so but checking is needed
             self.root.heightAndWeight()
 
     def insert(self, new_node):
@@ -88,12 +97,39 @@ class AVL:
     def balance(self, yp_node):
         pass
 
+    def draw(self, mat):
+        # recursion limit in python is 300, so dividing by 4
+        if self.root:
+            if self.root.left:
+                if self.root.left.left:
+                    self.root.left.left.draw
+                if self.root.left.right:
+                    self.root.left.right.draw
+            if self.root.right:
+                if self.root.right.left:
+                    self.root.right.left.draw
+                if self.root.right.right:
+                    self.root.right.right.draw
+
+
 def printPoints(tree):
-    pass
+    mat = np.zeros((CO_RANGE, CO_RANGE))
+    tree.draw(mat)
+    for cell in mat:
+        if cell == 0:
+            print(" ", end='')
+        if cell == 1:
+            print("O", end='')
+        if cell == 2:
+            print("|", end='')
+        if cell == 3:
+            print("X", end='')
+
+
 
 
 def main():
-    pass
+    print("Where would you like to place the vertical line?")
 
 
 if __name__ == '__main__':
