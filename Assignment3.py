@@ -1,15 +1,5 @@
-#-------------------------------------------------------------------------------
-# Name:        Tree
-# Purpose:
-#
-# Author:      Alexandra Leyzerzon
-#
-# Created:     26/09/2020
-# Copyright:   (c) Alexandra Leyzerzon 2020
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
 class Node:
-    def __init__(self,key, y):
+    def __init__(self, key, y):
         self.key = key
         self.y = y
         # -1 is one more on the left, 1 is one more on the right
@@ -18,10 +8,44 @@ class Node:
         self.left = None
         self.parent = None
 
+    def addChild(self, n):
+        if n.key < self.key:
+            if not self.left:
+                self.left = n
+            else:
+                self.left.addChild(n)
+        else:
+            if not self.right:
+                self.right = n
+            else:
+                self.right.addChild(n)
+        n.parent = self
+
+    def youngParent(self):
+        if self.weight == 0 and self.parent:
+            return self.parent.youngParent
+        else:
+            return self
+
+    def heightAndWeight(self):
+        if self.left:
+            left_side = self.left.heightAndWeight
+        else:
+            left_side = 0
+        if self.right:
+            right_side = self.right.heightAndWeight
+        else:
+            right_side = 0
+
+        self.weight = right_side - left_side
+        return max(left_side, right_side) + 1
+
+
 class BST:
     def __init__(self):
         self.root = None
-    def Insert(tree,node):
+
+    def Insert(tree, node):
         y = None
         x = tree.root
         while x is not None:
@@ -44,24 +68,33 @@ class AVL:
     def __init__(self):
         self.root = None
 
-    def insert(self, n):
-        if not self.root:
-            self.root = n
+    def addChild(self, new_node):
+        self.insert(new_node)
+        yp_node = new_node.youngParent()
+        yp_node.heightAndWeight()
+        if yp_node.weight == 2 or yp_node.weight == -2:
+            self.balance(yp_node)
+            yp_node.heightAndWeight()
         else:
-            pass
+            # is needed??????
+            self.root.heightAndWeight()
 
-    def balance(self):
+    def insert(self, new_node):
+        if not self.root:
+            self.root = new_node
+        else:
+            self.root.addChild(new_node)
+
+    def balance(self, yp_node):
         pass
-
-    def updateWeights(self):
-        pass
-
 
 def printPoints(tree):
     pass
 
+
 def main():
     pass
+
 
 if __name__ == '__main__':
     main()
