@@ -1,8 +1,8 @@
 import numpy as np
 import Lib.random as rd
 
-NUMBER_OF_POINTS = 30
-CO_RANGE = 30
+NUMBER_OF_POINTS = 10
+CO_RANGE = 10
 
 
 class Node:
@@ -15,8 +15,6 @@ class Node:
         self.left = None
         self.parent = None
         self.line = False
-        # TODO: check if needed to avoid deep recursion
-        # self.height
 
     def addChild(self, n):
         if n.key < self.key:
@@ -69,15 +67,12 @@ class AVL:
 
     def addChild(self, new_node):
         self.insert(new_node)
-        yp_node = new_node.youngParent()
+        yp_node = new_node.youngParent()  # yp_node == A
         yp_node.heightAndWeight()
+
         if yp_node.weight == 2 or yp_node.weight == -2:
             self.balance(yp_node)
             yp_node.heightAndWeight()
-        else:
-            pass
-            # is needed?????? I don't think so but checking is needed
-            # self.root.heightAndWeight()
 
     def insert(self, new_node):
         if not self.root:
@@ -86,7 +81,63 @@ class AVL:
             self.root.addChild(new_node)
 
     def balance(self, yp_node):
-        pass
+        if yp_node.weight == -2:
+            # left
+            next_node = yp_node.left
+            if next_node.weight == 1:
+                # left-right
+                self.leftRotate(next_node)
+            # left-left, and also the second phase of left-right
+            self.rightRotate(yp_node)
+        else:
+            # right
+            next_node = yp_node.right  # next_node == B
+            if next_node.weight == -1:
+                # right-left
+                self.rightRotate(next_node)
+            # right-right, and also the second phase of right-left
+            self.leftRotate(yp_node)
+
+    def leftRotate(self, A):
+        # A is old_source
+        B = A.right  # new source
+        C = B.left  # old source's new right child
+        D = A.parent  # ancestor parent, if exists
+
+        B.left = A  # start rotation
+        A.right = C
+        A.parent = B
+        B.parent = D
+
+        # change ancestor parent
+        if D:
+            if D.left == A:
+                D.left = B
+            else:
+                D.right = B
+        else:
+            self.root = B
+
+    def rightRotate(self, A):
+        # A is old_source
+        B = A.left  # new source
+        C = B.right  # old source's new left child
+        D = A.parent  # ancestor parent, if exists
+
+        B.right = A  # start rotation
+        A.left = C
+        A.parent = B
+        B.parent = D
+
+
+        # change ancestor parent or ake root
+        if D:
+            if D.left == A:
+                D.left = B
+            else:
+                D.right = B
+        else:
+            self.root = B
 
 
 def Printer(mat):
@@ -104,7 +155,7 @@ def Printer(mat):
 
 def BuildTree():
     T = AVL()
-    for n in range(NUMBER_OF_POINTS):
+    for i in range(NUMBER_OF_POINTS):
         n = Node(rd.uniform(0, CO_RANGE), rd.uniform(0, CO_RANGE))
         T.addChild(n)
     return T
