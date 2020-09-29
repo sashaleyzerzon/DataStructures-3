@@ -1,8 +1,8 @@
 import numpy as np
-from Lib.random import randrange
+import Lib.random as rd
 
-NUMBER_OF_POINTS = 10
-CO_RANGE = 10
+NUMBER_OF_POINTS = 30
+CO_RANGE = 30
 
 
 class Node:
@@ -51,7 +51,8 @@ class Node:
         return max(left_side, right_side) + 1
 
     def draw(self, mat):
-        mat[self.key, self.y] = 1
+        print(self.key)
+        mat[round(self.y), round(self.key)] = round(self.key, 2)
         if self.left:
             self.left.draw(mat)
         if self.right:
@@ -59,7 +60,7 @@ class Node:
 
     def drawLine(self, mat):
         for cell in range(CO_RANGE):
-            mat[cell, self.key] = 2
+            mat[cell, round(self.key)] = -1
 
 
 class AVL:
@@ -87,45 +88,24 @@ class AVL:
     def balance(self, yp_node):
         pass
 
-    def draw(self, mat):
-        # TODO: check if needed:
-        # recursion limit in python is 300, so dividing by 4
-        # if self.root:
-        #     mat[self.root.y, self.root.key] = 1
-        #     if self.root.left:
-        #         mat[self.root.left.y, self.root.left.key] = 1
-        #         if self.root.left.left:
-        #             self.root.left.left.draw()
-        #         if self.root.left.right:
-        #             self.root.left.right.draw()
-        #     if self.root.right:
-        #         mat[self.root.right.y, self.root.right.key] = 1
-        #         if self.root.right.left:
-        #             self.root.right.left.draw()
-        #         if self.root.right.right:
-        #             self.root.right.right.draw()
-        if self.root:
-            self.root.draw(mat)
-
 
 def Printer(mat):
     for line in mat:
         for cell in line:
             if cell == 0:
-                print(" ", end=' ')
-            if cell == 1:
-                print("O", end=' ')
-            if cell == 2:
-                print("|", end=' ')
-            if cell == 3:
-                print("X", end=' ')
-        print("")
+                print("   ", end=' ')
+            else:
+                if cell == -1:
+                    print(" | ", end=' ')
+                else:
+                    print(cell, end=' ')
+        print("\n")
 
 
 def BuildTree():
     T = AVL()
     for n in range(NUMBER_OF_POINTS):
-        n = Node(randrange(0, CO_RANGE + 1, 1), randrange(0, CO_RANGE + 1, 1))
+        n = Node(rd.uniform(0, CO_RANGE), rd.uniform(0, CO_RANGE))
         T.addChild(n)
     return T
 
@@ -137,7 +117,7 @@ def NearestRightPoint(T, x0):
 def main():
     mat = np.zeros((CO_RANGE + 1, CO_RANGE + 1))
     T = BuildTree()
-    T.draw(mat)
+    T.root.draw(mat)
     Printer(mat)
     x0 = int(input("Where would you like to place the vertical line?"))
     # TODO: needs to be implemented inside the method NearestRightPoint
