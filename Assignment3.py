@@ -49,7 +49,6 @@ class Node:
         return max(left_side, right_side) + 1
 
     def draw(self, mat):
-        print(self.key)
         mat[round(self.y), round(self.key)] = round(self.key, 2)
         if self.left:
             self.left.draw(mat)
