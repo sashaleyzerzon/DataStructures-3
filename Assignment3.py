@@ -108,6 +108,8 @@ class AVL:
         A.right = C
         A.parent = B
         B.parent = D
+        if C:
+            C.parent = A
 
         # change ancestor parent
         if D:
@@ -128,8 +130,8 @@ class AVL:
         A.left = C
         A.parent = B
         B.parent = D
-
-
+        if C:
+            C.parent = A
         # change ancestor parent or ake root
         if D:
             if D.left == A:
