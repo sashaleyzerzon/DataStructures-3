@@ -68,6 +68,7 @@ class AVL:
     def addChild(self, new_node):
         self.insert(new_node)
         yp_node = new_node.youngParent()  # yp_node == A
+        # if no young parent exists, goes up to the top
         yp_node.heightAndWeight()
 
         if yp_node.weight == 2 or yp_node.weight == -2:
